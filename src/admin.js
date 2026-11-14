@@ -5,7 +5,7 @@ const dateFmt = new Intl.DateTimeFormat('it-IT', { dateStyle:'medium', timeStyle
 let records = [];
 
 export async function renderAdmin(app) {
-  document.title = 'Admin — Andrea 50';
+  document.title = 'Area riservata — Andrea 50';
   document.body.className = 'admin-page';
   let client;
   try { client = requireSupabase(); }
@@ -26,7 +26,7 @@ function adminNav(withLogout = false) {
 }
 
 function renderLogin(app, client, initialError = '') {
-  app.innerHTML = `<main class="admin-shell">${adminNav()}<div class="login-wrap"><section class="login-card"><p class="eyebrow">ACCESSO ORGANIZZATORI</p><h1>Dietro<br>le quinte.</h1><p>Inserisci le credenziali dell'account amministratore.</p><form novalidate><label class="field"><span class="field-label">Email</span><input name="email" type="email" autocomplete="username" required></label><label class="field"><span class="field-label">Password</span><input name="password" type="password" autocomplete="current-password" required></label><p class="form-error" role="alert">${esc(initialError)}</p><button class="btn btn-primary submit" type="submit">Accedi</button></form></section></div></main>`;
+  app.innerHTML = `<main class="admin-shell">${adminNav()}<div class="login-wrap"><section class="login-card"><p class="eyebrow">ACCESSO ORGANIZZATORI</p><h1>Dietro<br>le quinte.</h1><p>Accedi con l’email e la password dell’amministratore per vedere le conferme registrate su Supabase.</p><form novalidate><label class="field"><span class="field-label">Utente (email)</span><input name="email" type="email" autocomplete="username" required></label><label class="field"><span class="field-label">Password</span><input name="password" type="password" autocomplete="current-password" required></label><p class="form-error" role="alert">${esc(initialError)}</p><button class="btn btn-primary submit" type="submit">Accedi</button></form></section></div></main>`;
   const form = app.querySelector('form');
   if (!client) { form.querySelector('button').disabled = true; return; }
   form.addEventListener('submit', async e => {
@@ -47,7 +47,7 @@ function renderLogin(app, client, initialError = '') {
 }
 
 async function renderDashboard(app, client) {
-  app.innerHTML = `<main class="admin-shell">${adminNav(true)}<section class="admin-header"><div><p class="eyebrow">QUADRO GENERALE</p><h1>La formazione.</h1></div><label class="search"><span class="field-label" style="position:absolute;clip:rect(0 0 0 0)">Cerca per nome</span><input type="search" placeholder="Cerca per nome…" autocomplete="off"></label></section><div data-content><div class="loading">Carico le risposte…</div></div></main>`;
+  app.innerHTML = `<main class="admin-shell">${adminNav(true)}<section class="admin-header"><div><p class="eyebrow">CONFERME ALLA FESTA</p><h1>La formazione.</h1></div><label class="search"><span class="field-label" style="position:absolute;clip:rect(0 0 0 0)">Cerca per nome</span><input type="search" placeholder="Cerca per nome…" autocomplete="off"></label></section><div data-content><div class="loading">Carico le risposte…</div></div></main>`;
   app.querySelector('[data-logout]').addEventListener('click', async () => { await client.auth.signOut(); renderLogin(app, client); });
   const { data, error } = await client.from('rsvp').select('id,name,attending,guests,notes,created_at').order('created_at', { ascending:false });
   const content = app.querySelector('[data-content]');

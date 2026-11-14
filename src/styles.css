@@ -89,6 +89,44 @@ textarea { resize:vertical; min-height:92px; }
 @keyframes fade { to { opacity:1; } }
 @keyframes rise { to { transform:translateY(0); } }
 @media (min-width:760px) { .rsvp-card { padding:46px; } .confirm-actions { grid-template-columns:1fr 1.3fr; align-items:center; } }
+
+/* RSVP rosso-blu */
+.rsvp-section {
+  background:
+    linear-gradient(135deg, rgba(139, 20, 32, .94) 0 48%, rgba(12, 37, 88, .96) 52% 100%),
+    var(--ink);
+  padding-top: 72px;
+}
+.rsvp-card {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(145deg, rgba(29, 14, 22, .98), rgba(8, 22, 52, .98));
+  border-color: rgba(255, 255, 255, .25);
+  box-shadow: 0 34px 90px rgba(0, 0, 0, .48);
+}
+.rsvp-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 6px;
+  background: linear-gradient(90deg, #a51d2d 0 50%, #174b9a 50% 100%);
+}
+.rsvp-card .eyebrow { color: #f5d9a0; }
+.rsvp-card input,
+.rsvp-card textarea,
+.rsvp-card .counter { background: rgba(3, 8, 22, .72); border-color: rgba(255,255,255,.22); }
+.rsvp-card input:focus,
+.rsvp-card textarea:focus { border-color: #4f86dc; box-shadow: 0 0 0 3px rgba(41, 91, 170, .22); }
+.attendance-btn { background: rgba(3, 8, 22, .62); border-color: rgba(255,255,255,.24); color: #eee; }
+.attendance-btn[data-choice="true"].active { background: #174b9a; border-color: #73a4ee; color: #fff; }
+.attendance-btn[data-choice="false"].active { background: #9b1d2b; border-color: #e5707b; color: #fff; }
+.rsvp-form .btn-primary {
+  background: linear-gradient(90deg, #a51d2d 0 50%, #174b9a 50% 100%);
+  color: #fff;
+  border-color: rgba(255,255,255,.3);
+}
+.rsvp-form .btn-primary:hover { filter: brightness(1.12); }
+
 /* Admin */
 .admin-page { min-height:100svh; background:radial-gradient(circle at 80% -10%, rgba(209,179,111,.13), transparent 35%), var(--ink); }
 .admin-shell { width:min(1120px, 100%); margin:auto; padding:24px 18px 60px; }
