@@ -7,7 +7,7 @@ const esc = (v = '') => String(v).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&l
 
 app.innerHTML = `<main class="hero" style="background-image:url('${esc(EVENT.heroImage)}')">
   <header class="topbar"><div class="mark"><span class="star">★</span><span>50 ANNI<br>DI STORIE</span></div><a class="admin-link" href="./admin/">Area riservata</a></header>
-  <section class="hero-content"><p class="eyebrow">${esc(EVENT.eyebrow)}</p><h1>${esc(EVENT.title)}</h1><p class="tagline">${esc(EVENT.tagline)}</p>
+  <section class="hero-content"><p class="eyebrow">${esc(EVENT.eyebrow)}</p><h1 class="sr-only">${esc(EVENT.title)}</h1><p class="tagline">${esc(EVENT.tagline)}</p>
     <div class="details" aria-label="Dettagli dell'evento"><div class="detail"><span>Quando</span><strong>${esc(EVENT.dateLabel)}</strong><small>${esc(EVENT.timeLabel)}</small></div><div class="detail"><span>Dove</span><strong>${esc(EVENT.locationName)}</strong><small>${esc(EVENT.locationAddress)}</small></div></div>
     <div class="actions"><button class="btn btn-primary" data-attending="true">Ci sono 🥂</button><button class="btn btn-secondary" data-attending="false">Non posso 😢</button></div>
   </section></main>`;
