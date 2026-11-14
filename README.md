@@ -1,4 +1,4 @@
-# Andrea 50 — RSVP
+# Un calcio ai 50 anni — RSVP
 
 Invito digitale mobile-first con RSVP, conferma calendario, area admin protetta e deploy automatico su GitHub Pages.
 
@@ -10,7 +10,7 @@ Modifica `src/config.js`:
 - `mapsUrl` con il link esatto della location;
 - testi dell'invito.
 
-Sostituisci `public/andrea-hero.svg` con la foto desiderata (puoi usare JPG/WEBP e aggiornare `heroImage`).
+La foto dell’invito è in `public/andrea-san-lorenzo.jpeg`; puoi sostituirla e aggiornare `heroImage`.
 
 ## 2. Configura Supabase
 
