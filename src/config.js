@@ -8,7 +8,7 @@ export const EVENT = {
   isoEnd: '2026-12-05T01:30:00+01:00',
   locationName: 'Barrio San Lorenzo',
   locationAddress: 'Via dei Sabelli 88/C, Roma',
-  mapsUrl: 'https://www.bing.com/maps/search?mepi=57%7E%7EEmbedded%7ELargeMapLink&ty=18&v=2&sV=1&FORM=MIRE&q=Via+dei+Sabelli+88%2C+00185+Roma+RM%2C+Italia&ppois=41.8970461_12.5157033_Via+dei+Sabelli+88%2C+00185+Roma+RM%2C+Italia_%7E&cp=41.897046%7E12.515703&lvl=11&style=r',
+  mapsUrl: 'https://www.google.com/maps/search/Barrio+San+Lorenzo+Via+dei+Sabelli+88%2FC+Roma/@41.8976865,12.5141708,17z/data=!3m1!4b1?hl=it&entry=ttu&g_ep=EgoyMDI2MTExMC4wIKXMDSoASAFQAw%3D%3D',
   heroImage: './andrea-san-lorenzo.jpeg',
   calendarFilename: 'un-calcio-ai-50-anni.ics',
 };
