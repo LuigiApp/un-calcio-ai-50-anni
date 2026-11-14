@@ -60,6 +60,11 @@ input, textarea { width:100%; border:1px solid #343434; background:#0d0d0d; colo
 input:focus, textarea:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(209,179,111,.08); }
 textarea { resize:vertical; min-height:92px; }
 
+.sitebar { min-height:58px; padding:0 18px; display:flex; align-items:center; justify-content:space-between; gap:18px; background:#080808; border-bottom:1px solid var(--line); font-size:10px; font-weight:900; letter-spacing:.16em; }
+.hero { min-height:0; display:block; overflow:visible; background:#000; }
+.hero::before, .hero::after { display:none; }
+.hero-image { display:block; width:100%; height:auto; max-height:none; object-fit:contain; }
+
 .counter { display:grid; grid-template-columns:52px 1fr 52px; border:1px solid #343434; background:#0d0d0d; min-height:54px; }
 .counter button { border:0; background:transparent; color:var(--gold); font-size:24px; cursor:pointer; }
 .counter output { display:grid; place-items:center; border-left:1px solid #343434; border-right:1px solid #343434; font-weight:900; }
