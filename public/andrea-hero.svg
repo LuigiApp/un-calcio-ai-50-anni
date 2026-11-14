@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#25211d"/><stop offset="1" stop-color="#080808"/></linearGradient>
+    <radialGradient id="light"><stop stop-color="#c9aa68" stop-opacity=".32"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="4"/><feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 .11 0"/></filter>
+  </defs>
+  <rect width="1200" height="1800" fill="url(#bg)"/>
+  <circle cx="780" cy="500" r="700" fill="url(#light)"/>
+  <path d="M0 1370c220-180 340-150 510-340 190-210 355-90 690-430v1200H0z" fill="#111"/>
+  <path d="M0 1490c260-230 460-140 660-360 170-190 320-160 540-370" fill="none" stroke="#b9944d" stroke-opacity=".4" stroke-width="3"/>
+  <text x="70" y="170" fill="#d3b879" font-family="Arial, sans-serif" font-size="30" letter-spacing="12">SOSTITUISCI QUESTA IMMAGINE</text>
+  <text x="70" y="240" fill="#f4f0e8" font-family="Arial, sans-serif" font-weight="700" font-size="48">CON LA FOTO DI ANDREA</text>
+  <rect width="1200" height="1800" filter="url(#grain)" opacity=".8"/>
+</svg>
