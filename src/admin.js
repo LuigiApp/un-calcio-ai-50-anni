@@ -11,10 +11,18 @@ export async function renderAdmin(app) {
   try { client = requireSupabase(); }
   catch (error) { renderLogin(app, null, error.message); return; }
   app.innerHTML = '<div class="loading">Controllo accesso…</div>';
+  let recoveryRendered = false;
+  client.auth.onAuthStateChange((event, recoverySession) => {
+    if (event !== 'PASSWORD_RECOVERY' || !recoverySession || recoveryRendered) return;
+    recoveryRendered = true;
+    renderPasswordReset(app, client, recoverySession);
+  });
   const { data: { session } } = await client.auth.getSession();
-  const isPasswordRecovery = new URLSearchParams(window.location.search).get('reset') === '1';
+  if (recoveryRendered) return;
+  const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+  const isPasswordRecovery = hashParams.get('type') === 'recovery';
   if (!session) { renderLogin(app, client); return; }
-  if (isPasswordRecovery) { renderPasswordReset(app, client, session); return; }
+  if (isPasswordRecovery) { recoveryRendered = true; renderPasswordReset(app, client, session); return; }
   if (session.user?.app_metadata?.role !== 'admin') {
     await client.auth.signOut();
     renderLogin(app, client, 'Questo account non ha i permessi di amministratore.');
@@ -57,7 +65,7 @@ function renderLogin(app, client, initialError = '') {
     const statusBox = form.querySelector('.reset-status');
     if (!email) { errorBox.textContent = 'Inserisci prima l’indirizzo email.'; form.elements.email.focus(); return; }
     errorBox.textContent = ''; statusBox.textContent = 'Invio del link in corso…';
-    const redirectTo = `${window.location.origin}${window.location.pathname}?reset=1`;
+    const redirectTo = `${window.location.origin}${window.location.pathname}`;
     const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo });
     statusBox.textContent = error
       ? 'Non è stato possibile inviare il link. Riprova tra poco.'
