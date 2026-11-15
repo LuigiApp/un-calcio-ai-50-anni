@@ -7,10 +7,6 @@ const esc = (v = '') => String(v).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&l
 
 app.innerHTML = `<header class="sitebar"><span>UN CALCIO AI 50 ANNI</span><a class="admin-link" href="./admin/">Area riservata</a></header>
   <main class="hero"><img class="hero-image" src="${esc(EVENT.heroImage)}" alt="Invito ai 50 anni di Andrea"></main>
-  <section class="map-section" aria-labelledby="map-title"><div class="map-shell">
-    <div class="map-copy"><p class="eyebrow">DOVE SI GIOCA</p><h2 id="map-title">Ci vediamo al Barrio.</h2><p>${esc(EVENT.locationName)}<br><span>${esc(EVENT.locationAddress)}</span></p><a class="map-link" href="${esc(EVENT.mapsUrl)}" target="_blank" rel="noopener">Apri in Google Maps ↗</a></div>
-    <div class="map-frame"><iframe src="${esc(EVENT.mapsEmbedUrl)}" title="Google Maps — ${esc(EVENT.locationName)}" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
-  </div></section>
   <section class="rsvp-section" id="rsvp"><div class="rsvp-card">
     <p class="eyebrow">CONFERMA LA TUA PRESENZA</p><h2>Entra nella formazione.</h2><p class="rsvp-intro">Dicci se ci sarai. La risposta viene registrata solo dopo la conferma.</p>
     <form class="rsvp-form" novalidate>
