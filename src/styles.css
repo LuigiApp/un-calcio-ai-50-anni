@@ -139,6 +139,9 @@ textarea { resize:vertical; min-height:92px; }
 .login-card { width:min(440px, 100%); margin:auto; border:1px solid var(--line); background:rgba(18,18,18,.94); padding:28px 22px; box-shadow:0 35px 100px rgba(0,0,0,.4); }
 .login-card h1 { font-size:44px; line-height:.9; letter-spacing:-.05em; margin:10px 0 14px; }
 .login-card p { color:var(--muted); }
+.reset-link { width:100%; margin-top:14px; min-height:42px; border:0; background:transparent; color:var(--gold); cursor:pointer; text-decoration:underline; text-underline-offset:4px; }
+.reset-status { min-height:20px; margin:10px 0 0; color:#c9d8f2!important; font-size:13px; text-align:center; }
+
 .admin-header { display:flex; flex-direction:column; gap:22px; margin-bottom:26px; }
 .admin-header h1 { font-size:clamp(42px,9vw,80px); margin:0; line-height:.86; }
 .search { position:relative; width:100%; }

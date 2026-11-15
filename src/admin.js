@@ -12,7 +12,9 @@ export async function renderAdmin(app) {
   catch (error) { renderLogin(app, null, error.message); return; }
   app.innerHTML = '<div class="loading">Controllo accesso…</div>';
   const { data: { session } } = await client.auth.getSession();
+  const isPasswordRecovery = new URLSearchParams(window.location.search).get('reset') === '1';
   if (!session) { renderLogin(app, client); return; }
+  if (isPasswordRecovery) { renderPasswordReset(app, client, session); return; }
   if (session.user?.app_metadata?.role !== 'admin') {
     await client.auth.signOut();
     renderLogin(app, client, 'Questo account non ha i permessi di amministratore.');
@@ -26,7 +28,7 @@ function adminNav(withLogout = false) {
 }
 
 function renderLogin(app, client, initialError = '') {
-  app.innerHTML = `<main class="admin-shell">${adminNav()}<div class="login-wrap"><section class="login-card"><p class="eyebrow">ACCESSO ORGANIZZATORI</p><h1>Dietro<br>le quinte.</h1><p>Accedi con l’email e la password dell’amministratore per vedere le conferme registrate su Supabase.</p><form novalidate><label class="field"><span class="field-label">Utente (email)</span><input name="email" type="email" autocomplete="username" required></label><label class="field"><span class="field-label">Password</span><input name="password" type="password" autocomplete="current-password" required></label><p class="form-error" role="alert">${esc(initialError)}</p><button class="btn btn-primary submit" type="submit">Accedi</button></form></section></div></main>`;
+  app.innerHTML = `<main class="admin-shell">${adminNav()}<div class="login-wrap"><section class="login-card"><p class="eyebrow">ACCESSO ORGANIZZATORI</p><h1>Dietro<br>le quinte.</h1><p>Accedi con l’email completa e la password dell’amministratore per vedere le conferme registrate su Supabase.</p><form novalidate><label class="field"><span class="field-label">Email amministratore</span><input name="email" type="email" autocomplete="username" required placeholder="nome@email.com"></label><label class="field"><span class="field-label">Password</span><input name="password" type="password" autocomplete="current-password" required></label><p class="form-error" role="alert">${esc(initialError)}</p><button class="btn btn-primary submit" type="submit">Accedi</button><button class="reset-link" type="button" data-reset>Ho dimenticato la password</button><p class="reset-status" role="status"></p></form></section></div></main>`;
   const form = app.querySelector('form');
   if (!client) { form.querySelector('button').disabled = true; return; }
   form.addEventListener('submit', async e => {
@@ -38,11 +40,48 @@ function renderLogin(app, client, initialError = '') {
     if (!email || !password) { errorBox.textContent = 'Inserisci email e password.'; return; }
     button.disabled = true; button.textContent = 'Accesso…'; errorBox.textContent = '';
     const { data, error } = await client.auth.signInWithPassword({ email, password });
-    if (error) { errorBox.textContent = 'Credenziali non valide.'; button.disabled = false; button.textContent = 'Accedi'; return; }
+    if (error) {
+      errorBox.textContent = error.code === 'email_not_confirmed'
+        ? 'Email non ancora confermata. Apri prima il messaggio ricevuto da Supabase.'
+        : 'Email o password non corrette. Usa l’indirizzo email completo oppure reimposta la password.';
+      button.disabled = false; button.textContent = 'Accedi'; return;
+    }
     if (data.user?.app_metadata?.role !== 'admin') {
       await client.auth.signOut(); errorBox.textContent = 'Questo account non ha i permessi di amministratore.'; button.disabled = false; button.textContent = 'Accedi'; return;
     }
     await renderDashboard(app, client);
+  });
+  form.querySelector('[data-reset]').addEventListener('click', async () => {
+    const email = form.elements.email.value.trim();
+    const errorBox = form.querySelector('.form-error');
+    const statusBox = form.querySelector('.reset-status');
+    if (!email) { errorBox.textContent = 'Inserisci prima l’indirizzo email.'; form.elements.email.focus(); return; }
+    errorBox.textContent = ''; statusBox.textContent = 'Invio del link in corso…';
+    const redirectTo = `${window.location.origin}${window.location.pathname}?reset=1`;
+    const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo });
+    statusBox.textContent = error
+      ? 'Non è stato possibile inviare il link. Riprova tra poco.'
+      : 'Controlla la posta: abbiamo inviato il link per impostare una nuova password.';
+  });
+}
+
+function renderPasswordReset(app, client, session) {
+  app.innerHTML = `<main class="admin-shell">${adminNav()}<div class="login-wrap"><section class="login-card"><p class="eyebrow">NUOVA PASSWORD</p><h1>Ripristina<br>l’accesso.</h1><p>Imposta una nuova password per l’Area riservata.</p><form novalidate><label class="field"><span class="field-label">Nuova password</span><input name="password" type="password" autocomplete="new-password" minlength="8" required></label><label class="field"><span class="field-label">Ripeti password</span><input name="confirm" type="password" autocomplete="new-password" minlength="8" required></label><p class="form-error" role="alert"></p><button class="btn btn-primary submit" type="submit">Salva password</button></form></section></div></main>`;
+  const form = app.querySelector('form');
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const password = form.elements.password.value;
+    const confirm = form.elements.confirm.value;
+    const errorBox = form.querySelector('.form-error');
+    const button = form.querySelector('button');
+    if (password.length < 8) { errorBox.textContent = 'La password deve contenere almeno 8 caratteri.'; return; }
+    if (password !== confirm) { errorBox.textContent = 'Le due password non coincidono.'; return; }
+    button.disabled = true; button.textContent = 'Salvataggio…';
+    const { error } = await client.auth.updateUser({ password });
+    if (error) { errorBox.textContent = 'Non è stato possibile aggiornare la password.'; button.disabled = false; button.textContent = 'Salva password'; return; }
+    window.history.replaceState({}, '', window.location.pathname);
+    if (session.user?.app_metadata?.role === 'admin') await renderDashboard(app, client);
+    else renderLogin(app, client, 'Password aggiornata. Accedi con le nuove credenziali.');
   });
 }
 
